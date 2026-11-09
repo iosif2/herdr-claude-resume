@@ -1,5 +1,6 @@
 {
   "global": {
-    "cmd-shift-r": "claude-resume.go"
+    "cmd-shift-r": "claude-resume.go",
+    "cmd-alt-shift-r": "claude-resume.all"
   }
 }

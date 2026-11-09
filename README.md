@@ -1,6 +1,6 @@
 # herdr-claude-resume
 
-A mod for the [Herdr](https://herdr.dev) desktop app: **one key restarts the focused agent in place, on the same conversation.**
+A mod for the [Herdr](https://herdr.dev) desktop app: **one key restarts the focused agent in place, on the same conversation. Another key does it for every agent at once.**
 
 After a Claude Code update every pane says "restart to apply". Instead of quitting each one and retyping `claude --resume <id>`, press the key twice: the program is ended, its terminal keeps its shell, and the same command line comes back with `--resume <its session id>` added when it was missing. Same pane, same tab, same address.
 
@@ -10,7 +10,7 @@ Tell the agent in your Herdr window:
 
 > Read ~/.config/herdr-app/AGENTS.md, then add this mod: https://github.com/iosif2/herdr-claude-resume
 
-It copies `mods/claude-resume/` into `~/.config/herdr-app/mods/`, merges `keys.json` (Cmd+Shift+R), and adds the floating block to your layout. By hand:
+It copies `mods/claude-resume/` into `~/.config/herdr-app/mods/`, merges `keys.json` (Cmd+Shift+R, Cmd+Alt+Shift+R), and adds the floating block to your layout. By hand:
 
 ```sh
 git clone https://github.com/iosif2/herdr-claude-resume
@@ -31,7 +31,7 @@ herdr-app do layout.clone '{"name":"main","as":"mine"}'
 It draws nothing until it has something to say. Bind the key in `keys.json`:
 
 ```json
-{ "global": { "cmd-shift-r": "claude-resume.go" } }
+{ "global": { "cmd-shift-r": "claude-resume.go", "cmd-alt-shift-r": "claude-resume.all" } }
 ```
 
 ## Use
@@ -40,7 +40,10 @@ It draws nothing until it has something to say. Bind the key in `keys.json`:
 |---|---|
 | Cmd+Shift+R | a pill asks `Restart <agent> on the same session? Press the key again.` |
 | Cmd+Shift+R again within 4 s | `Stopping…`, `Starting again…`, `Restarted <agent>` |
+| Cmd+Alt+Shift+R | a pill asks `Restart all N agents (M working too) on the same sessions? Press the key again.` |
+| Cmd+Alt+Shift+R again within 4 s | every agent is restarted at the same time; the pill counts `0/N`…`N/N`, a toast lists who came back and who didn't |
 | `herdr-app do claude-resume.dry` | shows the line it would type, changes nothing |
+| `herdr-app do claude-resume.dry:all` | one toast with the line every agent would come back with |
 | `herdr-app do claude-resume.go:t7` | the same two-step restart for a terminal that isn't focused |
 
 Claude Code sessions get `--resume <id>` from Claude's own `~/.claude/sessions/<pid>.json`; a bare `codex` comes back as `codex resume --last`; anything else is run again exactly as it was.
